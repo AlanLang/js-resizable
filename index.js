@@ -1,1 +1,4 @@
-export * from './dist/resizable';
+import { Resizable } from './dist/resizable';
+export {
+    Resizable,
+};

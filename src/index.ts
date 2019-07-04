@@ -1,12 +1,11 @@
-import { OptionsType, ConfigType } from './index.typings';
 const DEFAULT_HANDLES = ['e', 'w', 'n', 's', 'nw', 'ne', 'sw', 'se'];
 export class Resizable {
     private element: HTMLElement;
     private options: OptionsType;
 
-    public constructor(el: HTMLElement, options: OptionsType) {
+    public constructor(el: HTMLElement, options?: OptionsType) {
         this.element = el;
-        this.options = options;
+        this.options = options || {};
         this.createHandles();
     }
 
@@ -35,6 +34,7 @@ export class Resizable {
         handle.onmousedown = handleEvent => {
             const { x: baseX, y: baseY } = handleEvent;
             const { width, height } = this.element.style;
+            const { offsetTop, offsetLeft } = this.element;
             document.onmousemove = docEvent => {
                 const { x, y } = docEvent;
                 this.resize(direction, {
@@ -42,6 +42,8 @@ export class Resizable {
                     baseY,
                     width,
                     height,
+                    offsetTop,
+                    offsetLeft,
                     x,
                     y,
                 });
@@ -54,7 +56,7 @@ export class Resizable {
     }
 
     private resize(direction: string, config: ConfigType) {
-        const { baseX, baseY, width, height, x, y } = config;
+        const { baseX, baseY, width, height, x, y, offsetTop, offsetLeft } = config;
         const direc = direction.split('');
         direc.forEach(item => {
             switch (item) {
@@ -63,9 +65,11 @@ export class Resizable {
                     break;
                 case 'w':
                     this.element.style.width = `${parseFloat(width) + (baseX - x)}px`;
+                    this.element.style.left = `${offsetLeft - (baseX - x)}px`;
                     break;
                 case 'n':
                     this.element.style.height = `${parseFloat(height) + (baseY - y)}px`;
+                    this.element.style.top = `${offsetTop - (baseY - y)}px`;
                     break;
                 case 's':
                     this.element.style.height = `${parseFloat(height) + (y - baseY)}px`;
@@ -164,4 +168,19 @@ export class Resizable {
                 };
         }
     }
+}
+
+export interface OptionsType{
+    handles?: string[];
+    threshold?: number;
+}
+export interface ConfigType {
+    baseX: number;
+    baseY: number;
+    width: string;
+    height: string;
+    x: number;
+    y: number;
+    offsetTop: number;
+    offsetLeft: number;
 }
