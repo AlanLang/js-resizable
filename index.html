@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+    <div id="demo" style="width: 200px; height: 100px;border: solid 2px red;"></div>
+    <script>
+      window.onload = function(){
+        const demo = document.getElementById('demo');
+        console.log(new Resizable.Resizable(demo,{
+          handles: ['e', 'w', 'n', 's', 'nw', 'ne', 'sw', 'se']
+        }));
+      }
+    </script>
+</body>
+</html>
