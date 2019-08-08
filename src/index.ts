@@ -9,6 +9,11 @@ export class Resizable {
         this.createHandles();
     }
 
+    public setPosition(top: number, left: number) {
+        this.element.style.top = `${top}px`;
+        this.element.style.left = `${left}px`;
+    }
+
     private createHandles() {
         const { handles = DEFAULT_HANDLES } = this.options;
         handles.filter(item => DEFAULT_HANDLES.includes(item)).forEach(direction => {
