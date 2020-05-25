@@ -40,6 +40,9 @@ export class Resizable {
             const { x: baseX, y: baseY } = handleEvent;
             const { width, height } = this.element.style;
             const { offsetTop, offsetLeft } = this.element;
+            this.getChilds().forEach(item => {
+                item.style.pointerEvents = 'none';
+            });
             document.onmousemove = docEvent => {
                 const { x, y } = docEvent;
                 this.resize(direction, {
@@ -56,8 +59,15 @@ export class Resizable {
             document.onmouseup = () => {
                 document.onmousemove = null;
                 document.onmouseup = null;
+                this.getChilds().forEach(item => {
+                    item.style.pointerEvents = 'auto';
+                });
             };
         };
+    }
+
+    private getChilds() {
+        return ([].slice.call(this.element.children) as HTMLElement[]).filter(item => !item.className.includes('resizable-handle'));
     }
 
     private resize(direction: string, config: ConfigType) {
