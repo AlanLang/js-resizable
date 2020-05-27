@@ -7,7 +7,7 @@ const htmlWebpackPlugin = new HtmlWebpackPlugin({
 });
 module.exports = {
     mode: 'development',
-    devtool: 'cheap-module-source-map',
+    devtool: 'source-map',
     entry: path.join(__dirname, 'src/index.ts'),
     output: {
         library: 'Resizable',

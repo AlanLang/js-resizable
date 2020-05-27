@@ -5,6 +5,7 @@ export declare class Resizable {
     setPosition(top: number, left: number): void;
     private createHandles;
     private createHandle;
+    private getChilds;
     private resize;
     private getStyleByDirection;
 }
