@@ -2,9 +2,11 @@ const DEFAULT_HANDLES = ['e', 'w', 'n', 's', 'nw', 'ne', 'sw', 'se'];
 export class Resizable {
     private element: HTMLElement;
     private options: OptionsType;
+    private document: Document;
 
     public constructor(el: HTMLElement, options?: OptionsType) {
         this.element = el;
+        this.document = el.ownerDocument;
         this.options = options || {};
         this.createHandles();
     }
@@ -24,7 +26,7 @@ export class Resizable {
     private createHandle(direction: string) {
         const { threshold = 10 } = this.options;
         this.element.style.position = 'absolute';
-        const handle = document.createElement('div');
+        const handle = this.document.createElement('div');
         handle.classList.add(`resizable-handle-${direction}`);
         handle.style.position = 'absolute';
         const { left, right, width, height, top, bottom, cursor } = this.getStyleByDirection(direction, threshold);
@@ -43,7 +45,7 @@ export class Resizable {
             this.getChilds().forEach(item => {
                 item.style.pointerEvents = 'none';
             });
-            document.onmousemove = docEvent => {
+            this.document.onmousemove = docEvent => {
                 const { x, y } = docEvent;
                 this.resize(direction, {
                     baseX,
@@ -56,9 +58,9 @@ export class Resizable {
                     y,
                 });
             };
-            document.onmouseup = () => {
-                document.onmousemove = null;
-                document.onmouseup = null;
+            this.document.onmouseup = () => {
+                this.document.onmousemove = null;
+                this.document.onmouseup = null;
                 this.getChilds().forEach(item => {
                     item.style.pointerEvents = 'auto';
                 });
