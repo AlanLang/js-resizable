@@ -27,7 +27,7 @@ export class Resizable {
         const { threshold = 10 } = this.options;
         this.element.style.position = 'absolute';
         const handle = this.document.createElement('div');
-        handle.classList.add(`resizable-handle-${direction}`);
+        handle.className += `resizable-handle-${direction}`
         handle.style.position = 'absolute';
         const { left, right, width, height, top, bottom, cursor } = this.getStyleByDirection(direction, threshold);
         handle.style.left = left;
