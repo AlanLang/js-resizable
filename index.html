@@ -10,9 +10,18 @@
     <script>
       window.onload = function(){
         const demo = document.getElementById('demo');
-        console.log(new Resizable.Resizable(demo,{
-          handles: ['e', 'w', 'n', 's', 'nw', 'ne', 'sw', 'se']
-        }));
+        const callback = function () {
+          console.log('ok')
+        }
+        new Resizable.Resizable(demo,{
+          handles: ['e', 'w', 'n', 's', 'nw', 'ne', 'sw', 'se'],
+          initSize: {
+            maxWidth: 500,
+            maxHeight: 500,
+            minWidth: 100,
+            minHeight: 100,
+          }
+        }, callback);
       }
     </script>
 </body>

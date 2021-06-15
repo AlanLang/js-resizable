@@ -2,7 +2,8 @@ export declare class Resizable {
     private element;
     private options;
     private document;
-    constructor(el: HTMLElement, options?: OptionsType);
+    private callback;
+    constructor(el: HTMLElement, options?: OptionsType, callback?: Function);
     setPosition(top: number, left: number): void;
     private createHandles;
     private createHandle;

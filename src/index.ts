@@ -1,13 +1,20 @@
 const DEFAULT_HANDLES = ['e', 'w', 'n', 's', 'nw', 'ne', 'sw', 'se'];
+const MAX_WIDTH = 1000;
+const MAX_HEIGHT = 1000;
+const MIN_WIDTH = 200;
+const MIN_HEIGHT = 200;
+
 export class Resizable {
     private element: HTMLElement;
     private options: OptionsType;
     private document: Document;
+    private callback: Function;
 
-    public constructor(el: HTMLElement, options?: OptionsType) {
+    public constructor(el: HTMLElement, options?: OptionsType, callback?: Function) {
         this.element = el;
         this.document = el.ownerDocument;
         this.options = options || {};
+        this.callback = callback;
         this.createHandles();
     }
 
@@ -27,7 +34,7 @@ export class Resizable {
         const { threshold = 10 } = this.options;
         this.element.style.position = 'absolute';
         const handle = this.document.createElement('div');
-        handle.className += `resizable-handle-${direction}`
+        handle.className += `resizable-handle-${direction}`;
         handle.style.position = 'absolute';
         const { left, right, width, height, top, bottom, cursor } = this.getStyleByDirection(direction, threshold);
         handle.style.left = left;
@@ -61,6 +68,7 @@ export class Resizable {
             this.document.onmouseup = () => {
                 this.document.onmousemove = null;
                 this.document.onmouseup = null;
+                this.callback();
                 this.getChilds().forEach(item => {
                     item.style.pointerEvents = 'auto';
                 });
@@ -75,21 +83,58 @@ export class Resizable {
     private resize(direction: string, config: ConfigType) {
         const { baseX, baseY, width, height, x, y, offsetTop, offsetLeft } = config;
         const direc = direction.split('');
+        let maxW = this.options?.initSize?.maxWidth || MAX_WIDTH;
+        let minW = this.options?.initSize?.minWidth || MIN_WIDTH;
+        let maxH = this.options?.initSize?.maxHeight || MAX_HEIGHT;
+        let minH = this.options?.initSize?.minHeight || MIN_HEIGHT;
+
         direc.forEach(item => {
             switch (item) {
                 case 'e':
-                    this.element.style.width = `${parseFloat(width) + (x - baseX)}px`;
+                    var w = parseFloat(width) + (x - baseX);
+
+                    if (w > maxW) {
+                        w = maxW;
+                    } else if (w < minW) {
+                        w = minW;
+                    }
+
+                    this.element.style.width = w + 'px';
                     break;
                 case 'w':
-                    this.element.style.width = `${parseFloat(width) + (baseX - x)}px`;
+                    var w = parseFloat(width) + (baseX - x);
+
+                    if (w > maxW) {
+                        w = maxW;
+                    } else if (w < minW) {
+                        w = minW;
+                    }
+
+                    this.element.style.width = w + 'px';
                     this.element.style.left = `${offsetLeft - (baseX - x)}px`;
                     break;
                 case 'n':
-                    this.element.style.height = `${parseFloat(height) + (baseY - y)}px`;
+                    var h = parseFloat(height) + (baseY - y);
+
+                    if (h > maxH) {
+                        h = maxH;
+                    } else if (h < minH) {
+                        h = minH;
+                    }
+
+                    this.element.style.height = h + 'px';
                     this.element.style.top = `${offsetTop - (baseY - y)}px`;
                     break;
                 case 's':
-                    this.element.style.height = `${parseFloat(height) + (y - baseY)}px`;
+                    var h = parseFloat(height) + (y - baseY);
+
+                    if (h > maxH) {
+                        h = maxH;
+                    } else if (h < minH) {
+                        h = minH;
+                    }
+
+                    this.element.style.height = h + 'px';
                     break;
                 default:
                     break;
@@ -180,17 +225,24 @@ export class Resizable {
                     cursor: 'se-resize',
                 };
             default:
-                return {
-
-                };
+                return {};
         }
     }
 }
 
-export interface OptionsType{
+export interface OptionsType {
     handles?: string[];
     threshold?: number;
+    initSize?: ISize
 }
+
+export interface ISize {
+    maxWidth: number;
+    maxHeight: number;
+    minWidth: number;
+    minHeight: number;
+}
+
 export interface ConfigType {
     baseX: number;
     baseY: number;
