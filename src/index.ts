@@ -9,6 +9,8 @@ export class Resizable {
     private options: OptionsType;
     private document: Document;
     private callback: Function;
+    private w: number;
+    private h: number;
 
     public constructor(el: HTMLElement, options?: OptionsType, callback?: Function) {
         this.element = el;
@@ -83,58 +85,58 @@ export class Resizable {
     private resize(direction: string, config: ConfigType) {
         const { baseX, baseY, width, height, x, y, offsetTop, offsetLeft } = config;
         const direc = direction.split('');
-        let maxW = this.options?.initSize?.maxWidth || MAX_WIDTH;
-        let minW = this.options?.initSize?.minWidth || MIN_WIDTH;
-        let maxH = this.options?.initSize?.maxHeight || MAX_HEIGHT;
-        let minH = this.options?.initSize?.minHeight || MIN_HEIGHT;
+        const maxW = this.options?.initSize?.maxWidth || MAX_WIDTH;
+        const minW = this.options?.initSize?.minWidth || MIN_WIDTH;
+        const maxH = this.options?.initSize?.maxHeight || MAX_HEIGHT;
+        const minH = this.options?.initSize?.minHeight || MIN_HEIGHT;
 
         direc.forEach(item => {
             switch (item) {
                 case 'e':
-                    var w = parseFloat(width) + (x - baseX);
+                    this.w = parseFloat(width) + (x - baseX);
 
-                    if (w > maxW) {
-                        w = maxW;
-                    } else if (w < minW) {
-                        w = minW;
+                    if (this.w > maxW) {
+                        this.w = maxW;
+                    } else if (this.w < minW) {
+                        this.w = minW;
                     }
 
-                    this.element.style.width = w + 'px';
+                    this.element.style.width = `${this.w}px`;
                     break;
                 case 'w':
-                    var w = parseFloat(width) + (baseX - x);
+                    this.w = parseFloat(width) + (baseX - x);
 
-                    if (w > maxW) {
-                        w = maxW;
-                    } else if (w < minW) {
-                        w = minW;
+                    if (this.w > maxW) {
+                        this.w = maxW;
+                    } else if (this.w < minW) {
+                        this.w = minW;
                     }
 
-                    this.element.style.width = w + 'px';
+                    this.element.style.width = `${this.w}px`;
                     this.element.style.left = `${offsetLeft - (baseX - x)}px`;
                     break;
                 case 'n':
-                    var h = parseFloat(height) + (baseY - y);
+                    this.h = parseFloat(height) + (baseY - y);
 
-                    if (h > maxH) {
-                        h = maxH;
-                    } else if (h < minH) {
-                        h = minH;
+                    if (this.h > maxH) {
+                        this.h = maxH;
+                    } else if (this.h < minH) {
+                        this.h = minH;
                     }
 
-                    this.element.style.height = h + 'px';
+                    this.element.style.height = `${this.h}px`;
                     this.element.style.top = `${offsetTop - (baseY - y)}px`;
                     break;
                 case 's':
-                    var h = parseFloat(height) + (y - baseY);
+                    this.h = parseFloat(height) + (y - baseY);
 
-                    if (h > maxH) {
-                        h = maxH;
-                    } else if (h < minH) {
-                        h = minH;
+                    if (this.h > maxH) {
+                        this.h = maxH;
+                    } else if (this.h < minH) {
+                        this.h = minH;
                     }
 
-                    this.element.style.height = h + 'px';
+                    this.element.style.height = `${this.h}px`;
                     break;
                 default:
                     break;
@@ -233,10 +235,10 @@ export class Resizable {
 export interface OptionsType {
     handles?: string[];
     threshold?: number;
-    initSize?: ISize
+    initSize?: DomSize;
 }
 
-export interface ISize {
+export interface DomSize {
     maxWidth: number;
     maxHeight: number;
     minWidth: number;

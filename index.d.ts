@@ -3,6 +3,8 @@ export declare class Resizable {
     private options;
     private document;
     private callback;
+    private w;
+    private h;
     constructor(el: HTMLElement, options?: OptionsType, callback?: Function);
     setPosition(top: number, left: number): void;
     private createHandles;
@@ -14,6 +16,13 @@ export declare class Resizable {
 export interface OptionsType {
     handles?: string[];
     threshold?: number;
+    initSize?: DomSize;
+}
+export interface DomSize {
+    maxWidth: number;
+    maxHeight: number;
+    minWidth: number;
+    minHeight: number;
 }
 export interface ConfigType {
     baseX: number;
