@@ -2,12 +2,13 @@
 [click here](http://47.106.144.239:8080/)
 
 ## Example
+####Browser Script tag
 ```html
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>js-resizable</title>
+  <title>resizable-dom</title>
 </head>
 <body>
 <div id="demo"
@@ -33,6 +34,25 @@
 </script>
 <script type="text/javascript" src="resizable.js"></script></body>
 </html>
+```
+
+####Babel import
+```js
+import { Resizable } from 'resizable-dom'
+
+let node = document.querySelector('demo')
+
+new Resizable(node,{
+    handles: ['e', 'w', 'n', 's', 'nw', 'ne', 'sw', 'se'],
+    initSize: {
+      maxWidth: 1000,
+      maxHeight: 1000,
+      minWidth: 200,
+      minHeight: 200,
+    }
+  }, () => {
+    console.log('handle callback')
+  })
 ```
 
 ## Parameter

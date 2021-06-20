@@ -1,6 +1,6 @@
 {
-  "name": "js-resizable",
-  "version": "1.1.7",
+  "name": "resizable-dom",
+  "version": "1.0.1",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --mode development --open",
@@ -16,7 +16,12 @@
   "keywords": [
     "resizable"
   ],
-  "author": "alan",
+  "homepage": "https://gitee.com/zhangyeping/js-resizable",
+  "repository": {
+    "type" : "git",
+    "url" : "https://gitee.com/zhangyeping/js-resizable.git"
+  },
+  "author": "前端爱码士",
   "license": "MIT",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^1.11.0",
